@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import LoginView from '../views/LoginView.vue'
+import AuthView from '../views/AuthView.vue'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -7,18 +7,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: HomeView
-    },
-    {
-      path: '/auth',
-      name: 'Entrar',
-      component: LoginView
-    },
-    {
-      path: '/register',
-      name: 'Cadastro',
-      component: () => import('../views/RegisterView.vue')
+      alias: '/auth',
+      component: AuthView
     },
     {
       path: '/home',
@@ -39,7 +29,12 @@ const router = createRouter({
     //   path: '/walk-pet',
     //   name: 'Passear com Pets',
     //   component: () => import('../views/PetWalkView.vue')
-    // }
+    // },
+    {
+      path:'/:pathMatch(.*)*',
+      name: 'Not Found',
+      component: () => import('../views/NotFoundView.vue')
+    }
   ]
 })
 

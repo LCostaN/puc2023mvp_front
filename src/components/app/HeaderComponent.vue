@@ -1,28 +1,40 @@
 <script setup>
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import VerticalDivider from '../../components/app/VerticalDividerComponent.vue'
+
+const isLogged = ref(false)
+
+function logout() {
+  isLogged.value = true
+}
 </script>
 
 <template>
   <div class="header">
     <span class="header-title">Pet Community</span>
     <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
-      <RouterLink to="/register">Cadastro</RouterLink>
+      <RouterLink to="/home">Home</RouterLink>
+      <VerticalDivider>
+        <a href="#" @click.prevent="logout()" v-if="isLogged">
+          <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+        </a>
+        <RouterLink v-else to="/auth">Login</RouterLink>
+      </VerticalDivider>
     </nav>
   </div>
 </template>
 
 <style scoped>
 .header {
-  max-height: 4em;
+  height: 4em;
   display: flex;
   align-items: center;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  background-color: slategray;
+  background-color: var(--dark-bg);
   color: whitesmoke;
 }
 
@@ -58,6 +70,10 @@ nav a:hover {
 
 nav a:first-of-type {
   border: 0;
+}
+
+nav a:last-child {
+  margin-right: 20px;
 }
 
 </style>
