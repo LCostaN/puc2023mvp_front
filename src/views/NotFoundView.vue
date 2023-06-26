@@ -1,12 +1,12 @@
 <script setup>
-
+  import BackButton from '../components/app/BackButtonComponent.vue';
 </script>
 
 <template>
   <div class="card">
     <h1>Ops...</h1>
     <h4>Página não encontrada</h4>
-    <button @click="$router.go(-1)">Voltar</button>
+    <BackButton />
   </div>
 </template>
 

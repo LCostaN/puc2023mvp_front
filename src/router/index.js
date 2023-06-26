@@ -7,31 +7,37 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      alias: '/auth',
-      component: AuthView
-    },
-    {
-      path: '/home',
+      alias: '/home',
       name: 'Home',
       component: HomeView
     },
-    // {
-    //   path: '/add-pet',
-    //   name: 'Cadastrar Pet',
-    //   component: () => import('../views/PetRegisterView.vue')
-    // },
-    // {
-    //   path: '/edit-pet',
-    //   name: 'Editar Pet',
-    //   component: () => import('../views/PetEditView.vue')
-    // },
-    // {
-    //   path: '/walk-pet',
-    //   name: 'Passear com Pets',
-    //   component: () => import('../views/PetWalkView.vue')
-    // },
     {
-      path:'/:pathMatch(.*)*',
+      path: '/auth',
+      name: 'Auth',
+      component: AuthView
+    },
+    {
+      path: '/adopt',
+      name: 'Adopt',
+      component: () => import('../views/AdoptView.vue')
+    },
+    {
+      path: '/for-adoption',
+      name: 'Adoption',
+      component: () => import('../views/AdoptionView.vue')
+    },
+    {
+      path: '/walk',
+      name: 'Walk',
+      component: () => import('../views/WalkView.vue')
+    },
+    {
+      path: '/denounce',
+      name: 'Denounce',
+      component: () => import('../views/DenounceView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
       name: 'Not Found',
       component: () => import('../views/NotFoundView.vue')
     }

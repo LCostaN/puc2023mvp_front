@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import VerticalDivider from '../../components/app/VerticalDividerComponent.vue'
 
 const isLogged = ref(false)
 
@@ -14,13 +13,13 @@ function logout() {
   <div class="header">
     <span class="header-title">Pet Community</span>
     <nav>
-      <RouterLink to="/home">Home</RouterLink>
-      <VerticalDivider>
+      <RouterLink to="/" v-if="$route.name == 'Auth'">Home</RouterLink>
+      <div v-else>
         <a href="#" @click.prevent="logout()" v-if="isLogged">
           <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
         </a>
         <RouterLink v-else to="/auth">Login</RouterLink>
-      </VerticalDivider>
+      </div>
     </nav>
   </div>
 </template>
@@ -75,5 +74,4 @@ nav a:first-of-type {
 nav a:last-child {
   margin-right: 20px;
 }
-
 </style>

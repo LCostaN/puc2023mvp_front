@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // Icons
+// Solid
 import { faRightFromBracket, faHeart, faHandshakeAngle, faCircleExclamation, faDog } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faRightFromBracket)
@@ -15,6 +16,7 @@ library.add(faHeart)
 library.add(faHandshakeAngle)
 library.add(faCircleExclamation)
 library.add(faDog)
+
 
 const app = createApp(App)
 
