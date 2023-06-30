@@ -4,7 +4,7 @@
   font-weight: normal;
 }
 
-.main {
+main {
   height: 100vh;
   padding: 5em 2em 4em;
 }
@@ -25,10 +25,6 @@
 .v-enter-active,
 .v-leave-active {
   transition: all 0.3s ease-out;
-}
-
-.v-enter-active {
-  transition-delay: 400ms;
 }
 
 .v-enter-from,

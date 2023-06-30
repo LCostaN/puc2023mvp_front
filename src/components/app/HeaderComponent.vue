@@ -1,26 +1,16 @@
-<script setup>
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-
-const isLogged = ref(false)
-
-function logout() {
-  isLogged.value = true
-}
-</script>
+<script setup></script>
 
 <template>
   <div class="header">
-    <span class="header-title">Pet Community</span>
-    <nav>
-      <RouterLink to="/" v-if="$route.name == 'Auth'">Home</RouterLink>
-      <div v-else>
-        <a href="#" @click.prevent="logout()" v-if="isLogged">
-          <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
-        </a>
-        <RouterLink v-else to="/auth">Login</RouterLink>
-      </div>
-    </nav>
+    <span class="header-title">
+      Pet Walk
+      <font-awesome-icon
+        :icon="['fas', 'paw']"
+        size="lg"
+        beat
+        style="--fa-animation-iteration-count: 2"
+      />
+    </span>
   </div>
 </template>
 
