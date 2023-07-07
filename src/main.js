@@ -14,10 +14,21 @@ import {
   faHandshakeAngle,
   faCircleExclamation,
   faDog,
-  faPaw
+  faPaw,
+  faCircleNotch,
+  faChevronLeft
 } from '@fortawesome/free-solid-svg-icons'
 
-library.add([faRightFromBracket, faHeart, faHandshakeAngle, faCircleExclamation, faDog, faPaw])
+library.add([
+  faRightFromBracket,
+  faHeart,
+  faHandshakeAngle,
+  faCircleExclamation,
+  faDog,
+  faPaw,
+  faCircleNotch,
+  faChevronLeft
+])
 
 const app = createApp(App)
 

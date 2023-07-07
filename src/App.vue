@@ -11,3 +11,10 @@ import Footer from './components/app/FooterComponent.vue'
     <Footer />
   </body>
 </template>
+
+<style scoped>
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -1,9 +1,11 @@
 <script setup>
 defineProps({
-  "size": String
+  size: String,
 })
 </script>
 
 <template>
-  <font-awesome-icon :icon="['fas', 'circle-notch']" spin :size="size"/>
+  <div class="loading-container">
+    <font-awesome-icon :icon="['fas', 'circle-notch']" spin :size="size" />
+  </div>
 </template>

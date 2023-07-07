@@ -4,9 +4,24 @@
   font-weight: normal;
 }
 
-main {
+body {
   height: 100vh;
-  padding: 5em 2em 4em;
+  overflow: hidden;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #2222ff;
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #8888ff;
+  border-radius: 20px;
+  border: 2px solid blue;
 }
 
 .center {
@@ -20,6 +35,7 @@ main {
   border-radius: 16px;
   padding: 1em;
   width: fit-content;
+  height: fit-content;
 }
 
 .v-enter-active,
@@ -35,4 +51,10 @@ main {
 
 b {
   font-weight: bold !important;
+}
+
+.error {
+  padding: 0 4px;
+  color: white;
+  background-color: red
 }

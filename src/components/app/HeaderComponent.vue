@@ -3,7 +3,7 @@
 <template>
   <div class="header">
     <span class="header-title">
-      Pet Walk
+      Dog Care
       <font-awesome-icon
         :icon="['fas', 'paw']"
         size="lg"
@@ -19,10 +19,6 @@
   height: 4em;
   display: flex;
   align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
   background-color: var(--dark-bg);
   color: whitesmoke;
 }

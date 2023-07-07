@@ -1,23 +1,23 @@
 <script setup>
   defineProps({
-    ownerView: Boolean
+    scheduleView: Boolean
   })
 </script>
 
 <template>
   <div class="button-row">
-    <button :class="{ active: ownerView }" @click="$emit('toggle', true)">Meu Pet</button>
-    <button :class="{ active: !ownerView }" @click="$emit('toggle', false)">Lista de Pets</button>
+    <button :class="{ active: scheduleView }" @click="$emit('toggle', true)">Agendar Banho</button>
+    <button :class="{ active: !scheduleView }" @click="$emit('toggle', false)">Ver produtos</button>
   </div>
 
 </template>
 
-<style scoped>
+<style>
 .button-row {
   display: flex;
   justify-content: space-evenly;
-  padding: 0 0 1em;
-  margin-bottom: 1em;
+  padding: 0 0 0.5em;
+  margin-bottom: 0.5em;
   border-bottom: solid 2px blue;
 }
 
