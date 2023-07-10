@@ -13,6 +13,7 @@ defineProps({ product: Product })
       :alt="product.name"
     />
     <img v-else class="product-image" src="@/assets/no-product-image.jpg" :alt="product.name" />
+    {{ console.log(product) }}
     <b>{{ product.name }}</b>
     <div class="product-description">{{ product.description }}</div>
     <div class="product-count">

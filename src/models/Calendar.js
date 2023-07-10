@@ -1,6 +1,52 @@
 export default class Calendar {
-  constructor(dates) {
-    this.dates = dates || []
+  constructor(unavailableDates, startDate) {
+    this.now = startDate || new Date(new Date().getTime() + 86400000)
+    this.unavailableDates = unavailableDates.map((d) => d.getTime())
+    
+    this.computeDates()
+  }
+
+  computeDates() {
+    this.dates = new Map()
+    for (var i = 0; i < 7; i++) {
+      let day = this.now.getDate() + i
+      let allDates = []
+
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 8))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 8, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 9))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 9, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 10))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 10, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 11))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 11, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 12))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 12, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 13))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 13, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 14))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 14, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 15))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 15, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 16))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 16, 30))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 17))
+      allDates.push(new Date(this.now.getFullYear(), this.now.getMonth(), day, 17, 30))
+
+      const availableDates = allDates.filter((date) => !this.unavailableDates.includes(date.getTime()))
+
+      this.dates.set(day, availableDates)
+    }
+  }
+
+  addSchedule(date) {
+    this.unavailableDates.push(date.getTime())
+    this.computeDates()
+  }
+
+  changeStartDate(newDate) {
+    this.now = newDate
+    this.computeDates()
   }
 
   static mock() {

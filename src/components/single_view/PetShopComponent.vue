@@ -1,9 +1,16 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
+
+// Components
 import Loading from '../app/LoadingComponent.vue'
 import ProductList from './shop/ProductListComponent.vue'
 import CategoryList from './shop/CategoryListComponent.vue'
+
+// Model
 import Product from '../../models/Product'
+
+// Service
+import service from '../../services/ApiService'
 
 const loading = ref(false)
 
@@ -95,10 +102,10 @@ const categories = computed(() => Object.keys(products.value))
 
 function loadData() {
   loading.value = true
-  fetch('http://localhost:5000/products')
-    .then((response) => response.json())
+  service
+    .getProducts()
     .then((data) => {
-      products.value = data
+      products.value = new Map(data.map((e) => [e.category || 'Outros', e]))
     })
     .catch(() => {})
     .finally(() => {

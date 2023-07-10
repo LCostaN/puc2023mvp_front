@@ -1,8 +1,15 @@
 <script setup>
+import { onMounted, ref } from 'vue'
+
+// Components
+import Loading from '../app/LoadingComponent.vue'
+
+// Models
 import Calendar from '../../models/Calendar'
 import Pet from '../../models/Pet'
-import Loading from '../app/LoadingComponent.vue'
-import { onMounted, ref } from 'vue'
+
+// Service
+import service from '../../services/ApiService'
 
 const loading = ref(false)
 
@@ -11,7 +18,7 @@ const selectedDate = ref(null)
 const fileInput = ref(null)
 const image = ref(null)
 
-const calendar = ref(Calendar.mock())
+const calendar = ref(null)
 
 const errors = ref({ date: false })
 
@@ -24,17 +31,36 @@ function formatDate(date) {
 function formatTime(date) {
   if (!date) return ''
   var formated = date.toLocaleString('pt-BR').split(', ')
-  return formated[1].substring(0, 5)
+  return formated[1].slice(0, 5)
+}
+
+function formatDateTime(date) {
+  return formatDate(date) + ' ' + formatTime(date)
 }
 
 function loadData() {
   loading.value = true
-  fetch('http://localhost:5000/get-available')
-    .then((response) => response.json())
+  service
+    .getSchedules()
     .then((data) => {
-      calendar.value = data
+      const dates = data.schedules.map((val) => {
+        const dateParts = val.date.split('/')
+        const yearTime = dateParts[2].split(' ')
+        const timeParts = yearTime[1].split(':')
+
+        const year = yearTime[0]
+        const month = dateParts[1] - 1
+        const day = dateParts[0]
+        const hour = timeParts[0]
+        const minute = timeParts[1]
+
+        return new Date(year, month, day, hour, minute)
+      })
+      calendar.value = new Calendar(dates)
     })
-    .catch(() => {})
+    .catch((error) => {
+      console.log(error)
+    })
     .finally(() => {
       loading.value = false
     })
@@ -44,7 +70,7 @@ onMounted(loadData)
 
 function onSelectDate(date) {
   selectedDate.value = date
-  errors.value.date = false;
+  errors.value.date = false
 }
 
 function chooseFile() {
@@ -63,6 +89,14 @@ function previewImage(event) {
   }
 }
 
+function handleError(error) {
+  alert(
+    'Ops! Parece que não conseguimos registrar este horário no momento.' +
+      ' Tente outro horário ou tente novamente mais tarde.'
+  )
+  console.error('Error:', error)
+}
+
 async function onSubmit(e) {
   e.preventDefault()
   if (selectedDate.value == null) errors.value.date = true
@@ -72,31 +106,36 @@ async function onSubmit(e) {
   }
 
   try {
-    const data = JSON.stringify({ ...pet.value, file: image.value })
-
-    loading.value = true
-    await fetch('http://localhost:5000/schedule', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: data
+    const data = JSON.stringify({
+      ...pet.value,
+      date: formatDateTime(selectedDate.value),
+      file: image.value,
     })
 
-    alert(
-      'Registrado com sucesso! Compareça no endereço ' +
-        '<Rua lugar nenhum, 1000, Sorocaba - SP> ' +
-        'com 15 minutos de antecedência.'
-    )
-    pet.value = new Pet()
-    selectedDate.value = null
-    image.value = null
+    loading.value = true
+    service
+      .postSchedule(data)
+      .then((response) => {
+        if (response.status != 200) return handleError(response.statusText)
+        alert(
+          'Registrado com sucesso! Compareça no endereço ' +
+            '<Rua lugar nenhum, 1000, Sorocaba - SP> ' +
+            'com 15 minutos de antecedência.'
+        )
+
+        calendar.value.addSchedule(selectedDate.value)
+        pet.value = new Pet()
+        selectedDate.value = null
+        image.value = null
+      })
+      .catch((error) => {
+        handleError(error)
+      })
+      .finally(() => {
+        loading.value = false
+      })
   } catch (error) {
-    alert(
-      'Ops! Parece que não conseguimos registrar este horário no momento.' +
-        ' Tente outro horário ou tente novamente mais tarde.'
-    )
-    console.error('Error:', error)
+    handleError(error)
   } finally {
     loading.value = false
   }
@@ -129,33 +168,43 @@ async function onSubmit(e) {
     </form>
     <div class="card history-card">
       <h1 class="header">Horários disponíveis</h1>
-      <div>
-        <ul v-if="calendar">
+      <div class="calendar-grid" v-if="calendar">
+        <ul :key="day" v-for="day in calendar.dates">
+          <b>{{ formatDate(day[1][0]).slice(0, 5) }}</b>
           <li
             :key="item"
             :class="{ active: selectedDate == item }"
-            v-for="item in calendar.dates"
+            v-for="item in day[1]"
             @click="() => onSelectDate(item)"
           >
-            <span>{{ formatDate(item) }}</span
-            ><br />
             <b>{{ formatTime(item) }}</b>
           </li>
         </ul>
-        <span v-else>Nenhum horário disponível nos próximos 7 dias</span>
       </div>
+      <span v-else>Nenhum horário disponível nos próximos 7 dias</span>
     </div>
   </div>
 </template>
 
 <style scoped>
-ul {
+.calendar-grid {
+  max-height: 440px;
   display: grid;
   grid-auto-rows: auto;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 20px;
-  margin: 0 10px 0 0;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+ul {
+  margin: 0;
   padding: 0;
+  text-align: center;
+}
+
+ul:last-child {
+  margin-right: 10px;
 }
 
 ul li {
@@ -166,6 +215,8 @@ ul li {
   text-align: center;
   transition: 0.2s;
   font-size: large;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 ul li.active {
@@ -177,8 +228,8 @@ ul li:hover {
   background-color: #cfcfff;
 }
 
-ul li b {
-  border-top: solid 0.5px black;
+ul > b {
+  font-size: 1.5rem;
 }
 
 .dateSpan {
@@ -210,12 +261,6 @@ ul li b {
 
 .history-card {
   flex: 1 1 360px;
-}
-
-.history-card > div {
-  overflow: auto;
-  margin-top: 8px;
-  max-height: 440px;
 }
 
 .header {
@@ -265,8 +310,12 @@ input {
   }
 
   .history-card {
-    min-width: 380px;
+    min-width: 300px;
     flex: 1 1 480px;
+  }
+
+  .calendar-grid {
+    overflow: auto;
   }
 }
 </style>
