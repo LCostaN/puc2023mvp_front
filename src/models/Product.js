@@ -8,6 +8,6 @@ export default class Product {
   }
 
   static fromObject(object) {
-    return new Product(object.name, object.category, object.description, object.src, object.count)
+    return new Product(object.name, object.category, object.description, object.src, object.quantity)
   }
 }
