@@ -14,87 +14,7 @@ import service from '../../services/ApiService'
 
 const loading = ref(false)
 
-const products = ref({
-  Ração: [
-    Product.fromObject({
-      name: 'Natural Formula',
-      description: 'Feita somente com produtos naturais, ideal para raças mais sensíveis'
-    }),
-    Product.fromObject({
-      name: 'Ração Industrial',
-      description:
-        'Ração fruto de pesquisa química na produção de ração. ' +
-        'Não há um produto natural se quer, mas a ciência diz que é especialmente nutritiva.'
-    }),
-    Product.fromObject({
-      name: 'Ração Vira-lata',
-      description: 'A ração mais barata do mercado. Não recomendado para consumo por seres vivos'
-    })
-  ],
-  Brinquedos: [
-    Product.fromObject({
-      name: 'Bola',
-      description:
-        'Borracha sintética que massageia a boca do pet ao morder. Tamanhos S, M e G disponíveis',
-      count: 200
-    }),
-    Product.fromObject({
-      name: 'Osso de Borracha',
-      description:
-        'Brinquedo clássico de cães! Temos opções nas cores azul, verde, rosa e branco, além de com ou sem barulho extra!'
-    }),
-    Product.fromObject({
-      name: 'Corda sintética',
-      description:
-        'Para aqueles que adoram um cabo de guerra, essa corda é feita especialmente para brincar com seu pet' +
-        'sem que um dos dois saia machucado! Mas bom senso no uso da força ainda é recomendado.'
-    })
-  ],
-  Acessórios: [
-    Product.fromObject({
-      name: 'Laço de cabeça',
-      description: 'Laço para cabeça, orelhas e outros.'
-    }),
-    Product.fromObject({
-      name: 'Coleira Eu amo meu Dono',
-      description:
-        'Não deixe que seu pet indigente! O número de telefone do dono e os dados básicos do seu pet são gravados nesta coleira.'
-    })
-  ],
-  Roupas: [
-    Product.fromObject({
-      name: 'Hello Kitty'
-    }),
-    Product.fromObject({
-      name: 'I am the king'
-    }),
-    Product.fromObject({
-      name: 'Muscles are life'
-    }),
-    Product.fromObject({
-      name: 'I love my owner'
-    })
-  ],
-  Suplementos: [
-    Product.fromObject({
-      name: 'Vitamina Dogão',
-      description: 'Todas as vitaminas que seu Pet precisa.'
-    }),
-    Product.fromObject({
-      name: 'Dog Muscle',
-      description:
-        'Suplementos para desenvolvimento muscular do pet. ' +
-        'Não utilize sem recomendação veterinária.'
-    }),
-    Product.fromObject({
-      name: 'Dogbiótico',
-      description:
-        'Probiótico canino. Adicione uma dose diária para ' +
-        'que seu dog tenha um intestino saudável e eficiente.\n' +
-        '**Observação: Redução no tamanho das fezes é normal.'
-    })
-  ]
-})
+const products = ref({})
 const category = ref(null)
 
 const selectedProducts = computed(() => products.value[category.value])
@@ -105,9 +25,22 @@ function loadData() {
   service
     .getProducts()
     .then((data) => {
-      products.value = new Map(data.map((e) => [e.category || 'Outros', e]))
+      const map = {}
+
+      for (const p of data.products) {
+        console.log(p)
+        const product = Product.fromObject(p)
+        
+        if(!map[product.category]) map[product.category] = []
+
+        map[product.category] = [...map[product.category], product]
+      }
+
+      products.value = map
     })
-    .catch(() => {})
+    .catch((error) => {
+      console.log(error)
+    })
     .finally(() => {
       loading.value = false
     })
