@@ -28,7 +28,6 @@ function loadData() {
       const map = {}
 
       for (const p of data.products) {
-        console.log(p)
         const product = Product.fromObject(p)
         
         if(!map[product.category]) map[product.category] = []
