@@ -1,13 +1,13 @@
 <script setup>
   defineProps({
-    scheduleView: Boolean
+    showSchedule: Boolean
   })
 </script>
 
 <template>
   <div class="button-row">
-    <button :class="{ active: scheduleView }" @click="$emit('toggle', true)">Agendar Banho</button>
-    <button :class="{ active: !scheduleView }" @click="$emit('toggle', false)">Ver produtos</button>
+    <button :class="{ active: showSchedule }" @click="$emit('toggle', true)">Agendar Banho</button>
+    <button :class="{ active: !showSchedule }" @click="$emit('toggle', false)">Ver produtos</button>
   </div>
 
 </template>

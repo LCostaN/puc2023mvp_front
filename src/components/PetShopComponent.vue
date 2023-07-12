@@ -2,15 +2,15 @@
 import { computed, onMounted, ref } from 'vue'
 
 // Components
-import Loading from '../app/LoadingComponent.vue'
+import Loading from './LoadingComponent.vue'
 import ProductList from './shop/ProductListComponent.vue'
 import CategoryList from './shop/CategoryListComponent.vue'
 
 // Model
-import Product from '../../models/Product'
+import Product from '../models/Product'
 
 // Service
-import service from '../../services/ApiService'
+import service from '../services/apiService'
 
 const loading = ref(false)
 

@@ -2,14 +2,14 @@
 import { onMounted, ref } from 'vue'
 
 // Components
-import Loading from '../app/LoadingComponent.vue'
+import Loading from './LoadingComponent.vue'
 
 // Models
-import Calendar from '../../models/Calendar'
-import Pet from '../../models/Pet'
+import Calendar from '../models/Calendar'
+import Pet from '../models/Pet'
 
 // Service
-import service from '../../services/ApiService'
+import service from '../services/apiService'
 
 const loading = ref(false)
 

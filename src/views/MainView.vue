@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import ChooseView from '../single_view/ChooseViewComponent.vue'
-import Schedule from '../single_view/ScheduleComponent.vue'
-import PetShop from '../single_view/PetShopComponent.vue'
+import ChooseView from '../components/ChooseViewComponent.vue'
+import Schedule from '../components/ScheduleComponent.vue'
+import PetShop from '../components/PetShopComponent.vue'
 
 const scheduleView = ref(true)
 
@@ -14,7 +14,7 @@ function toggleView(val) {
 
 <template>
   <main>
-    <ChooseView :scheduleView="scheduleView" @toggle="toggleView" />
+    <ChooseView :showSchedule="scheduleView" @toggle="toggleView" />
     <Transition mode="out-in" appear>
       <Schedule v-if="scheduleView" />
       <PetShop v-else />

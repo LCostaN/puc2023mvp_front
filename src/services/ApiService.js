@@ -1,3 +1,4 @@
+/// URL BASE da API - Altere aqui caso a API tenha sido hospedada em outro endereço
 const BASE_URL = 'http://localhost:5000'
 
 class ApiService {
